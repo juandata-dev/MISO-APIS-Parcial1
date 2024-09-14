@@ -1,5 +1,5 @@
 import { Entity, Column, ManyToMany, JoinTable, PrimaryGeneratedColumn } from 'typeorm';
-import { ClubEntity } from '../../clubs/club.entity/club.entity';
+import { ClubEntity } from '../clubs/club.entity';
 
 @Entity()
 export class SocioEntity {
