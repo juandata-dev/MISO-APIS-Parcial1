@@ -25,14 +25,14 @@ export class ClubsService {
 
 	async create(club: ClubEntity): Promise<ClubEntity> {
 		if (club.descripcion.length > 100) {
-			throw new BusinessException('La descripción excede los 100 caracteres', BusinessError.BAD_REQUEST);
+			throw new BusinessException('La descripción excede los 100 caracteres', BusinessError.PRECONDITION_FAILED);
 		}
 		return await this.clubRepository.save(club);
 	}
 
 	async update(id: number, club: ClubEntity): Promise<ClubEntity> {
 		if (club.descripcion.length > 100) {
-			throw new BusinessException('La descripción excede los 100 caracteres', BusinessError.BAD_REQUEST);
+			throw new BusinessException('La descripción excede los 100 caracteres', BusinessError.PRECONDITION_FAILED);
 		}
 		const clubPersisted = await this.clubRepository.findOne({ where: { id } });
 		if (!clubPersisted) {

@@ -42,38 +42,43 @@ export class ClubSocioService {
 		if (!club) {
 			throw new BusinessException('El club con el id proporcionado no existe', BusinessError.NOT_FOUND);
 		}
-		const socio = club.socios.find(s => s.id === socioId);
+        const socio = await this.socioRepository.findOne({ where: { id: socioId } });
 		if (!socio) {
+			throw new BusinessException('El socio con el id proporcionado no existe', BusinessError.NOT_FOUND);
+		}
+		const socioEncontrado: SocioEntity = club.socios.find(s => s.id === socio.id);
+		if (!socioEncontrado) {
 			throw new BusinessException('El socio con el id proporcionado no existe en el club', BusinessError.NOT_FOUND);
 		}
-		return socio;
+		return socioEncontrado;
 	}
 
-	async updateMembersFromClub(clubId: number, socioIds: number[]): Promise<void> {
+	async updateMembersFromClub(clubId: number, socios: SocioEntity[]): Promise<void> {
 		const club = await this.clubRepository.findOne({ where: { id: clubId }, relations: ['socios'] });
 		if (!club) {
-			throw new BusinessException('El club con el id proporcionado no existe', BusinessError.NOT_FOUND);
+			throw new BusinessException('El club con el id proporcionado no existe', BusinessError.PRECONDITION_FAILED);
 		}
-		for (const socioId of socioIds) {
-			const socio = await this.socioRepository.findOne({ where: { id: socioId } });
-			if (!socio) {
-				throw new BusinessException('El socio con el id proporcionado no existe', BusinessError.NOT_FOUND);
-			}
-			club.socios.push(socio);
-		}
-		await this.clubRepository.save(club);
+        for (const socio of socios) {
+            const socioEncontrado = await this.socioRepository.findOne({ where: { id: socio.id } });
+            if (!socioEncontrado) {
+                throw new BusinessException('El socio con el id proporcionado no existe', BusinessError.NOT_FOUND);
+            }
+        }
+        // Reemplazar la lista de socios del club
+        club.socios = socios;
+        await this.clubRepository.save(club);
 	}
 
 	async deleteMemberFromClub(clubId: number, socioId: number): Promise<void> {
 		const club = await this.clubRepository.findOne({ where: { id: clubId }, relations: ['socios'] });
 		if (!club) {
-			throw new BusinessException('El club con el id proporcionado no existe', BusinessError.NOT_FOUND);
+			throw new BusinessException('El club con el id proporcionado no existe', BusinessError.PRECONDITION_FAILED);
 		}
-		const socio = club.socios.find(s => s.id === socioId);
+		const socio = await this.socioRepository.findOne({ where: { id: socioId } });
 		if (!socio) {
-			throw new BusinessException('El socio con el id proporcionado no existe en el club', BusinessError.NOT_FOUND);
+			throw new BusinessException('El socio con el id proporcionado no existe en el club', BusinessError.PRECONDITION_FAILED);
 		}
-		club.socios = club.socios.filter(s => s.id !== socioId);
+		club.socios = club.socios.filter(s => s.id !== socio.id);
 		await this.clubRepository.save(club);
 	}
 }

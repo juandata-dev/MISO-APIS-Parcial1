@@ -26,14 +26,14 @@ export class SocioService {
 
 	async create(socio: SocioEntity): Promise<SocioEntity> {
 		if (!socio.email.includes('@')) {
-			throw new BusinessException('Email inválido', BusinessError.BAD_REQUEST);
+			throw new BusinessException('Email inválido', BusinessError.PRECONDITION_FAILED);
 		}
 		return await this.socioRepository.save(socio);
 	}
 
 	async update(id: number, socio: SocioEntity): Promise<SocioEntity> {
 		if (!socio.email.includes('@')) {
-			throw new BusinessException('Email inválido', BusinessError.BAD_REQUEST);
+			throw new BusinessException('Email inválido', BusinessError.PRECONDITION_FAILED);
 		}
 		const socioPersistido: SocioEntity = await this.socioRepository.findOne({where: {id}});
 		if (!socioPersistido) {
