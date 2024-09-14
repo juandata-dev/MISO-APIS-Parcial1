@@ -1,34 +1,39 @@
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Controller, Get, HttpCode, Post, Put, Delete, Param, Body, UseInterceptors } from '@nestjs/common';
 import { ClubSocioService } from './club-socio.service';
 import { ClubSocioDto } from './club-socio.dto';
+import { plainToInstance } from 'class-transformer';
+import { BusinessErrorsInterceptor } from '../shared/interceptors/business-errors/business-errors.interceptor'
 
 @Controller('clubs')
+@UseInterceptors(BusinessErrorsInterceptor)
 export class ClubSocioController {
   constructor(private readonly clubSocioService: ClubSocioService) {}
 
   @Post(':clubId/members')
-  addMemberToClub(@Param('clubId') clubId: string, @Body() clubSocioDto: ClubSocioDto) {
-    return this.clubSocioService.addMemberToClub(+clubId, clubSocioDto.socioId);
+  async addMemberToClub(@Param('clubId') clubId: number, @Param('socioId') socioId: number) {
+    return await this.clubSocioService.addMemberToClub(clubId, socioId);
   }
 
   @Get(':clubId/members')
-  findMembersFromClub(@Param('clubId') clubId: string) {
-    return this.clubSocioService.findMembersFromClub(+clubId);
+  async findMembersFromClub(@Param('clubId') clubId: number) {
+    return await this.clubSocioService.findMembersFromClub(clubId);
   }
 
   @Get(':clubId/members/:socioId')
-  findMemberFromClub(@Param('clubId') clubId: string, @Param('socioId') socioId: string) {
-    return this.clubSocioService.findMemberFromClub(+clubId, +socioId);
+  async findMemberFromClub(@Param('clubId') clubId: number, @Param('socioId') socioId: number) {
+    return await this.clubSocioService.findMemberFromClub(clubId, socioId);
   }
 
   @Put(':clubId/members')
-  updateMembersFromClub(@Param('clubId') clubId: string, @Body() clubSocioDtos: ClubSocioDto[]) {
-    const socioIds = clubSocioDtos.map(dto => dto.socioId);
-    return this.clubSocioService.updateMembersFromClub(+clubId, socioIds);
+  async updateMembersFromClub(@Param('clubId') clubId: number, @Body() clubSocioDtos: ClubSocioDto[]) {
+    const socioIds = plainToInstance(ClubSocioDto, clubSocioDtos).map(dto => dto.socioId);
+    return await this.clubSocioService.updateMembersFromClub(clubId, socioIds);
   }
 
   @Delete(':clubId/members/:socioId')
-  deleteMemberFromClub(@Param('clubId') clubId: string, @Param('socioId') socioId: string) {
-    return this.clubSocioService.deleteMemberFromClub(+clubId, +socioId);
+  @HttpCode(204)
+  async deleteMemberFromClub(@Param('clubId') clubId: number, @Param('socioId') socioId: number) {
+    return await this.clubSocioService.deleteMemberFromClub(clubId, socioId);
   }
 }

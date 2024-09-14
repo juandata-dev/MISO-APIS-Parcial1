@@ -4,7 +4,7 @@ import { catchError, Observable } from 'rxjs';
 import { BusinessError } from '../../errors/errors';
 
 @Injectable()
-export class ErroresNegocioInterceptor implements NestInterceptor {
+export class BusinessErrorsInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle()
       .pipe(catchError(error => {

@@ -1,33 +1,41 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, HttpCode, Post, Put, Delete, Body, Param, UseInterceptors } from '@nestjs/common';
 import { SocioService } from './socio.service';
+import { SocioEntity } from './socio.entity';
 import { SocioDto } from './socio.dto';
+import { BusinessErrorsInterceptor } from '../shared/interceptors/business-errors/business-errors.interceptor'
+import { plainToInstance } from 'class-transformer'
+
 
 @Controller('socios')
+@UseInterceptors(BusinessErrorsInterceptor)
 export class SocioController {
   constructor(private readonly socioService: SocioService) {}
 
   @Get()
-  findAll() {
-    return this.socioService.findAll();
+  async findAll() {
+    return await this.socioService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.socioService.findOne(+id);
+  async findOne(@Param('id') id: number) {
+    return await this.socioService.findOne(id);
   }
 
   @Post()
-  create(@Body() socioDto: SocioDto) {
-    return this.socioService.create(socioDto);
+  async create(@Body() socioDto: SocioDto) {
+    const socio: SocioEntity = plainToInstance(SocioEntity, socioDto);
+    return await this.socioService.create(socio);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() socioDto: SocioDto) {
-    return this.socioService.update(+id, socioDto);
+  async update(@Param('id') id: number, @Body() socioDto: SocioDto) {
+    const socio: SocioEntity = plainToInstance(SocioEntity, socioDto);
+    return await this.socioService.update(id, socio);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.socioService.delete(+id);
+  @HttpCode(204)
+  async remove(@Param('id') id: number) {
+    return await this.socioService.delete(id);
   }
 }
