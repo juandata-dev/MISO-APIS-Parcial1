@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ClubEntity } from './club.entity';
+import { BusinessError, BusinessException } from '../shared/errors/errors';
 
 @Injectable()
 export class ClubsService {
@@ -15,25 +16,36 @@ export class ClubsService {
 	}
 
 	async findOne(id: number): Promise<ClubEntity> {
-		return this.clubRepository.findOne({ where: { id } });
+		const club = await this.clubRepository.findOne({ where: { id } });
+		if (!club) {
+			throw new BusinessException('El club con el id proporcionado no existe', BusinessError.NOT_FOUND);
+		}
+		return club;
 	}
 
 	async create(club: ClubEntity): Promise<ClubEntity> {
 		if (club.descripcion.length > 100) {
-			throw new Error('La descripción excede los 100 caracteres');
+			throw new BusinessException('La descripción excede los 100 caracteres', BusinessError.BAD_REQUEST);
 		}
-		return this.clubRepository.save(club);
+		return await this.clubRepository.save(club);
 	}
 
 	async update(id: number, club: ClubEntity): Promise<ClubEntity> {
 		if (club.descripcion.length > 100) {
-			throw new Error('La descripción excede los 100 caracteres');
+			throw new BusinessException('La descripción excede los 100 caracteres', BusinessError.BAD_REQUEST);
 		}
-		await this.clubRepository.update(id, club);
-		return this.clubRepository.findOne({ where: { id } });
+		const clubPersisted = await this.clubRepository.findOne({ where: { id } });
+		if (!clubPersisted) {
+			throw new BusinessException('El club con el id proporcionado no existe', BusinessError.NOT_FOUND);
+		}
+		return await this.clubRepository.save({ ...clubPersisted, ...club });
 	}
 
 	async delete(id: number): Promise<void> {
-		await this.clubRepository.delete(id);
+		const clubToDelete = await this.clubRepository.findOne({ where: { id } });
+		if (!clubToDelete) {
+			throw new BusinessException('El club con el id proporcionado no existe', BusinessError.NOT_FOUND);
+		}
+		await this.clubRepository.remove(clubToDelete);
 	}
 }
