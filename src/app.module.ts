@@ -2,9 +2,8 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClubsModule } from './clubs/clubs.module';
-import { ClubsService } from './clubs/clubs.service';
 import { SociosModule } from './socios/socios.module';
-import { SocioService } from './socios/socio.service';
+import { ClubSocioModule } from './club-socio/club-socio.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
@@ -17,8 +16,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
     ClubsModule,
     SociosModule,
+    ClubSocioModule,
   ],
   controllers: [AppController],
-  providers: [AppService, SocioService, ClubsService],
+  providers: [AppService],
 })
 export class AppModule {}
