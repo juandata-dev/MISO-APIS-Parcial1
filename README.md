@@ -55,12 +55,10 @@ para las entidades y para la asociación.
 |GET|Obtener un club por un ID que no existe.|Obtener un socio por un ID que no existe.|Obtener un socio que no es parte un club.|
 |PUT|Actualizar un club.|Actualizar un socio.|Actualizar los socios que pertenecen a un club.|
 |PUT|Actualizar un club con un ID que no existe.|Actualizar un socio con un ID que no existe.|Actualizar los socios de un club, con un socio inexistente.|
-| - | :-: | :-: | :-: |
 |DELETE|Eliminar un club por su ID.|Eliminar un socio por su ID.|Eliminar un socio que es parte de un club.|
 |DELETE|Eliminar un club con un ID que no existe.|Eliminar un socio con un ID que no existe.|Eliminar un socio que no es parte de un club.|
-|||||
-|||||
-Entregable
+
+**Entregable**
 
 - Dentro del proyecto de Nest.js cree una carpeta denominada collections y exporte ahí las colecciones.
 - Suba todos los cambios a su repositorio.
