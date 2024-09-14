@@ -1,13 +1,13 @@
 {
 	"info": {
-		"_postman_id": "48631d0b-d56f-44b4-bb37-7a421f33b296",
+		"_postman_id": "569b922e-4aef-448d-b32b-fc93d7ca7174",
 		"name": "Club",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "30666062"
+		"_exporter_id": "3587568"
 	},
 	"item": [
 		{
-			"name": "Crear un Club valida",
+			"name": "Crear un Club valido",
 			"event": [
 				{
 					"listen": "test",
@@ -21,7 +21,8 @@
 							"pm.globals.set(\"id_Club\", data.id);\r",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -30,7 +31,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"nombre\": \"Pricesmart\",\r\n    \"ciudad\": \"MED\",\r\n    \"direccion\": \"en el poblado\"\r\n}",
+					"raw": "{\r\n    \"nombre\": \"The Breakfast Club\",\r\n    \"fechaFundacion\": \"1990-04-25\",\r\n    \"imagen\": \"https://i.imgur.com/j4ektfh.jpeg\",\r\n    \"descripcion\": \"Short descripcion\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -50,7 +51,7 @@
 			"response": []
 		},
 		{
-			"name": "Crear un Club invalida",
+			"name": "Crear un Club invalido",
 			"event": [
 				{
 					"listen": "test",
@@ -62,10 +63,11 @@
 							"\r",
 							"pm.test(\"mensaje de error esperado\", function () {\r",
 							"   var data = pm.response.json();\r",
-							"   pm.expect(data.message).to.eql(\"La ciudad del club debe ser un codigo de 3 digitos\");\r",
+							"   pm.expect(data.message).to.eql(\"La descripción excede los 100 caracteres\");\r",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -74,7 +76,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"nombre\": \"Pricesmart\",\r\n    \"ciudad\": \"MEDELLIN\",\r\n    \"direccion\": \"en el poblado\"\r\n}",
+					"raw": "{\r\n    \"nombre\": \"The Breakfast Club\",\r\n    \"fechaFundacion\": \"1990-04-25\",\r\n    \"imagen\": \"https://i.imgur.com/j4ektfh.jpeg\",\r\n    \"descripcion\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi commodo eu dolor ac accumsan. Curabitur ut lorem lorem. In suscipit, leo nec laoreet ultricies, est neque scelerisque neque, non convallis ipsum tellus ac lacus.\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -140,7 +142,8 @@
 							"   pm.response.to.have.status(200);\r",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -148,20 +151,20 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/clubs/{{id_club}}",
+					"raw": "{{baseURL}}/clubs/{{id_Club}}",
 					"host": [
 						"{{baseURL}}"
 					],
 					"path": [
 						"clubs",
-						"{{id_club}}"
+						"{{id_Club}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Obtener un Club invalida",
+			"name": "Obtener un Club invalido",
 			"event": [
 				{
 					"listen": "test",
@@ -173,10 +176,11 @@
 							"\r",
 							"pm.test(\"Mensaje de error esperado\", function () {\r",
 							"   var data = pm.response.json();\r",
-							"   pm.expect(data.message).to.eql(\"club no encontrada\");\r",
+							"   pm.expect(data.message).to.eql(\"El club con el id proporcionado no existe\");\r",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -207,7 +211,8 @@
 							"   pm.response.to.have.status(200);\r",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -216,7 +221,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"nombre\": \"Pricesmart\",\r\n    \"ciudad\": \"BOG\",\r\n    \"direccion\": \"en chapinero\"\r\n}",
+					"raw": "{\r\n    \"nombre\": \"The New Breakfast Club\",\r\n    \"fechaFundacion\": \"1990-04-25\",\r\n    \"imagen\": \"https://i.imgur.com/j4ektfh.jpeg\",\r\n    \"descripcion\": \"Short descripcion\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -224,65 +229,20 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseURL}}/clubs/{{id_club}}",
+					"raw": "{{baseURL}}/clubs/{{id_Club}}",
 					"host": [
 						"{{baseURL}}"
 					],
 					"path": [
 						"clubs",
-						"{{id_club}}"
+						"{{id_Club}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Actualizar un Club invalida/inexistente",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"El codigo esperado es 404\", function () {\r",
-							"   pm.response.to.have.status(404);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Mensaje de error esperado\", function () {\r",
-							"   var data = pm.response.json();\r",
-							"   pm.expect(data.message).to.eql(\"club no encontrada\");\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"nombre\": \"Pricesmart\",\r\n    \"ciudad\": \"MED\",\r\n    \"direccion\": \"en el poblado\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseURL}}/clubs/-1",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"clubs",
-						"-1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Actualizar un Club con una ciudad invalida",
+			"name": "Actualizar un Club invalido",
 			"event": [
 				{
 					"listen": "test",
@@ -294,10 +254,11 @@
 							"\r",
 							"pm.test(\"Mensaje de error esperado\", function () {\r",
 							"   var data = pm.response.json();\r",
-							"   pm.expect(data.message).to.eql(\"La ciudad del club debe ser un codigo de 3 digitos\");\r",
+							"   pm.expect(data.message).to.eql(\"La descripción excede los 100 caracteres\");\r",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -306,7 +267,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"nombre\": \"Pricesmart\",\r\n    \"ciudad\": \"BOGOTA\",\r\n    \"direccion\": \"en chapinero\"\r\n}",
+					"raw": "{\r\n    \"nombre\": \"The Breakfast Club\",\r\n    \"fechaFundacion\": \"1990-04-25\",\r\n    \"imagen\": \"https://i.imgur.com/j4ektfh.jpeg\",\r\n    \"descripcion\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi commodo eu dolor ac accumsan. Curabitur ut lorem lorem. In suscipit, leo nec laoreet ultricies, est neque scelerisque neque, non convallis ipsum tellus ac lacus.\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -314,13 +275,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseURL}}/clubs/{{id_producto}}",
+					"raw": "{{baseURL}}/clubs/{{id_Club}}",
 					"host": [
 						"{{baseURL}}"
 					],
 					"path": [
 						"clubs",
-						"{{id_producto}}"
+						"{{id_Club}}"
 					]
 				}
 			},
@@ -337,7 +298,8 @@
 							"   pm.response.to.have.status(204);\r",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -345,20 +307,20 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/clubs/{{id_club}}",
+					"raw": "{{baseURL}}/clubs/{{id_Club}}",
 					"host": [
 						"{{baseURL}}"
 					],
 					"path": [
 						"clubs",
-						"{{id_club}}"
+						"{{id_Club}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Eliminar un Club invalida",
+			"name": "Eliminar un Club invalido",
 			"event": [
 				{
 					"listen": "test",
@@ -370,10 +332,11 @@
 							"\r",
 							"pm.test(\"Mensaje de error esperado\", function () {\r",
 							"   var data = pm.response.json();\r",
-							"   pm.expect(data.message).to.eql(\"club no encontrada\");\r",
+							"   pm.expect(data.message).to.eql(\"El club con el id proporcionado no existe\");\r",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
