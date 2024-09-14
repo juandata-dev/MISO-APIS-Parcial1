@@ -1,14 +1,14 @@
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 import { ClubSocioService } from './club-socio.service';
-import { SocioEntity } from '../socios/socio.entity';
+import { ClubSocioDto } from './club-socio.dto';
 
 @Controller('clubs')
 export class ClubSocioController {
   constructor(private readonly clubSocioService: ClubSocioService) {}
 
   @Post(':clubId/members')
-  addMemberToClub(@Param('clubId') clubId: string, @Body() socio: SocioEntity) {
-    return this.clubSocioService.addMemberToClub(+clubId, socio.id); // Cambiar socio a socio.id
+  addMemberToClub(@Param('clubId') clubId: string, @Body() clubSocioDto: ClubSocioDto) {
+    return this.clubSocioService.addMemberToClub(+clubId, clubSocioDto.socioId);
   }
 
   @Get(':clubId/members')
@@ -22,8 +22,8 @@ export class ClubSocioController {
   }
 
   @Put(':clubId/members')
-  updateMembersFromClub(@Param('clubId') clubId: string, @Body() socios: SocioEntity[]) {
-    const socioIds = socios.map(socio => socio.id); // Mapear a un array de IDs
+  updateMembersFromClub(@Param('clubId') clubId: string, @Body() clubSocioDtos: ClubSocioDto[]) {
+    const socioIds = clubSocioDtos.map(dto => dto.socioId);
     return this.clubSocioService.updateMembersFromClub(+clubId, socioIds);
   }
 

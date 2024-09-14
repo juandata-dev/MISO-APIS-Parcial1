@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
 import { SocioService } from './socio.service';
-import { SocioEntity } from './socio.entity';
+import { SocioDto } from './socio.dto';
 
 @Controller('socios')
 export class SocioController {
@@ -17,13 +17,13 @@ export class SocioController {
   }
 
   @Post()
-  create(@Body() socio: SocioEntity) {
-    return this.socioService.create(socio);
+  create(@Body() socioDto: SocioDto) {
+    return this.socioService.create(socioDto);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() socio: SocioEntity) {
-    return this.socioService.update(+id, socio);
+  update(@Param('id') id: string, @Body() socioDto: SocioDto) {
+    return this.socioService.update(+id, socioDto);
   }
 
   @Delete(':id')

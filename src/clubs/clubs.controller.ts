@@ -1,33 +1,40 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, HttpCode } from '@nestjs/common';
 import { ClubsService } from './clubs.service';
+import { ClubDto } from './club.dto';
+import { plainToInstance } from 'class-transformer'
+import { ErroresNegocioInterceptor } from '../shared/interceptors/business-errors/business-errors.interceptor'
 import { ClubEntity } from './club.entity';
+
 
 @Controller('clubs')
 export class ClubsController {
   constructor(private readonly clubsService: ClubsService) {}
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.clubsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.clubsService.findOne(+id);
   }
 
   @Post()
-  create(@Body() club: ClubEntity) {
-    return this.clubsService.create(club);
+  async create(@Body() clubDto: ClubDto) {
+    const club: ClubEntity = plainToInstance(ClubEntity, clubDto);
+    return await this.clubsService.create(club);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() club: ClubEntity) {
-    return this.clubsService.update(+id, club);
+  async update(@Param('id') id: string, @Body() clubDto: ClubDto) {
+    const club: ClubEntity = plainToInstance(ClubEntity, clubDto);
+    return await this.clubsService.update(+id, club);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  @HttpCode(204)
+  async delete(@Param('id') id: string) {
     return this.clubsService.delete(+id);
   }
 }
