@@ -62,7 +62,7 @@ para las entidades y para la asociación.
 
 - Dentro del proyecto de Nest.js cree una carpeta denominada collections y exporte ahí las colecciones.
 - Suba todos los cambios a su repositorio.
-- Haga un *[release*](https://docs.github.com/es/repositories/releasing-projects-on-github/managing-releases-in-a-repository)* con el tag v1.0.0 y el nombre parcial-practico.
-- Suba el archivo .zip del *release* como respuesta a la actividad de Coursera.
+- Haga un release con el tag v1.0.0 y el nombre parcial-practico.
+- Suba el archivo .zip del release como respuesta a la actividad de Coursera.
 - Después de finalizado el plazo de entrega no realice ninguna modificación al repositorio. Cualquier cambio, por pequeño que sea, anula automáticamente el parcial.
 
